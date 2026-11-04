@@ -89,7 +89,7 @@ export default function PlayPage() {
         <div className="logo-mark">21<span>Q</span></div>
         <h1>How well do<br /><em>you know {challenge.creatorName}?</em></h1>
       </section>
-      <section className="panel play-panel">
+      <section key={index} className="panel play-panel question-transition">
         <div className="progress-row"><span>YOUR TURN</span><strong>{index + 1} / 21</strong></div>
         <div className="progress-track"><div className="progress-fill" style={{ width: `${(index + (reveal ? 1 : 0)) / 21 * 100}%` }} /></div>
         <div className="question-meta"><span>QUESTION {String(index + 1).padStart(2, "0")}</span><span>{question.category}</span></div>
