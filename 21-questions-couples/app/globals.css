@@ -83,3 +83,201 @@ footer span{padding:0 5px;color:var(--pink)}
 .link-button{display:block;text-decoration:none;text-align:center}
 .score-hint{text-align:center;color:#9485a6;font-size:11px;padding:0 0 15px}
 @media(max-width:560px){.shell{width:min(100% - 22px,760px);padding-top:35px}.hero{padding-left:5px;padding-right:5px}.panel{padding:21px}.question-card{padding:18px}.options-grid{grid-template-columns:1fr}.option{min-height:49px}.hero-pills{gap:6px}.hero-pills span{font-size:10px;padding:7px 9px}.play-panel h2{font-size:21px}.question-meta{font-size:8px}}
+
+
+/* =================================
+   21 QUESTIONS — VISUAL UPGRADE
+   ================================= */
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #482269 0%, transparent 48%),
+    radial-gradient(ellipse at 0% 100%, #24123e 0%, transparent 40%),
+    #0b0713;
+}
+
+.shell {
+  animation: pageEnter 0.7s ease both;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-mark {
+  text-shadow:
+    0 0 15px #a879ff,
+    0 0 35px #a879ff88,
+    0 0 65px #ef8fcb44;
+  animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+  from { filter: brightness(0.9); }
+  to { filter: brightness(1.25); }
+}
+
+.panel,
+.question-card {
+  background: linear-gradient(
+    145deg,
+    #211532ee,
+    #130d20f5
+  );
+  border: 1px solid #68458a88;
+  box-shadow:
+    0 15px 45px #00000055,
+    inset 0 1px 0 #ffffff0d;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.question-card:hover {
+  border-color: #a879ff;
+  box-shadow: 0 12px 35px #a879ff20;
+}
+
+.option {
+  position: relative;
+  overflow: hidden;
+  border-color: #49345f;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.option:hover {
+  transform: translateY(-3px);
+  border-color: #b58aff;
+  background: #302044;
+  box-shadow: 0 6px 20px #a879ff22;
+}
+
+.option.selected {
+  border-color: #c49cff;
+  background: linear-gradient(120deg, #482c69, #352044);
+  box-shadow:
+    0 0 0 1px #c49cff66,
+    0 0 22px #a879ff30;
+}
+
+.option-letter {
+  transition: background 0.2s, color 0.2s;
+}
+
+.option.selected .option-letter {
+  background: #a879ff;
+  color: #160c24;
+}
+
+.primary-button {
+  background: linear-gradient(105deg, #8850e8, #bd65d5, #e17bbd);
+  background-size: 200% 100%;
+  box-shadow: 0 8px 28px #a879ff40;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-position 0.3s ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  background-position: 100% 0;
+  box-shadow: 0 12px 35px #c078ff66;
+}
+
+.progress-track {
+  height: 7px;
+  background: #38264c;
+  box-shadow: inset 0 1px 3px #00000066;
+}
+
+.progress-fill {
+  box-shadow: 0 0 12px #c18aff;
+}
+
+.reveal-box {
+  animation: revealEnter 0.45s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes revealEnter {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.reveal-status.correct {
+  box-shadow: 0 0 22px #69dfb022;
+}
+
+.reveal-status.incorrect {
+  box-shadow: 0 0 22px #ff8f9e22;
+}
+
+.actual-answer {
+  border-color: #a879ff;
+  box-shadow: 0 0 20px #a879ff18;
+}
+
+.result-score {
+  text-shadow:
+    0 0 18px #a879ff,
+    0 0 45px #a879ff88;
+  animation: scorePop 0.7s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes scorePop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success-icon {
+  box-shadow: 0 0 25px #69dfb033;
+}
+
+.name-input {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.name-input:focus {
+  border-color: #c49cff;
+  box-shadow: 0 0 0 4px #a879ff25;
+}
+
+.hero-pills span {
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.hero-pills span:hover {
+  transform: translateY(-2px);
+  border-color: #a879ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
