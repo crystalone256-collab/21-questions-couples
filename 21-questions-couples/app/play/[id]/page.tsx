@@ -17,8 +17,12 @@ export default function PlayPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [reveal, setReveal] = useState<Reveal | null>(null);
   const [score, setScore] = useState(0);
+  const [participantName, setParticipantName] = useState("");
+const [started, setStarted] = useState(false);
+const [attemptSaved, setAttemptSaved] = useState(false);
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
+  const [savingAttempt, setSavingAttempt] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -55,17 +59,72 @@ export default function PlayPage() {
     }
   }
 
-  function nextQuestion() {
-    setIndex((i) => i + 1);
-    setSelected(null);
-    setReveal(null);
+  async function nextQuestion() {
+  if (index === 20) {
+    setSavingAttempt(true);
     setError("");
+
+    try {
+      const response = await fetch(`/api/challenges/${id}/attempt`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          participantName: participantName.trim() || "Anonymous",
+          score
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Could not save your result.");
+      }
+
+      setAttemptSaved(true);
+      setIndex(21);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not save your result.");
+    } finally {
+      setSavingAttempt(false);
+    }
+
+    return;
   }
+
+  setIndex((i) => i + 1);
+  setSelected(null);
+  setReveal(null);
+  setError("");
+}
 
   if (loading) return <main className="shell centered"><div className="loader-orb">21Q</div><p className="muted">Getting your questions ready...</p></main>;
   if (loadError || !challenge) return <main className="shell centered"><div className="logo-mark">21<span>Q</span></div><h1>Oops, this link<br /><em>isn't working.</em></h1><p className="error-message">{loadError || "Challenge not found."}</p><a className="primary-button link-button" href="/">Make a new challenge</a></main>;
 
   if (index >= 21) return (
+    if (!started) return (
+  <main className="shell centered">
+    <div className="eyebrow">BEFORE WE BEGIN ✨</div>
+    <div className="logo-mark">21<span>Q</span></div>
+    <h1>Who's taking<br /><em>the challenge?</em></h1>
+    <section className="panel">
+      <p className="muted">Enter your name or nickname. You can also play anonymously.</p>
+      <input
+        className="name-input"
+        type="text"
+        maxLength={40}
+        placeholder="Your name (optional)"
+        value={participantName}
+        onChange={(e) => setParticipantName(e.target.value)}
+      />
+      <button
+        className="primary-button"
+        onClick={() => setStarted(true)}
+      >
+        Let's play 💜
+      </button>
+    </section>
+  </main>
+);
     <main className="shell centered">
       <div className="eyebrow">THAT’S A WRAP ✨</div>
       <div className="result-score">{score}<span>/21</span></div>
@@ -112,7 +171,17 @@ export default function PlayPage() {
             <div className={`reveal-status ${reveal.correct ? "correct" : "incorrect"}`}>{reveal.correct ? "✓ You got it!" : "Not quite — keep going!"}</div>
             <p className="your-answer"><span>Your answer</span><strong>{question.options[selected!]}</strong></p>
             <p className="actual-answer"><span>{challenge.creatorName}’s actual answer</span><strong>{reveal.correctAnswer}</strong></p>
-            <button className="primary-button" onClick={nextQuestion}>{index === 20 ? "See my result →" : "Next question →"}</button>
+          <button
+  className="primary-button"
+  onClick={nextQuestion}
+  disabled={savingAttempt || attemptSaved}
+>
+  {savingAttempt
+    ? "Saving your result..."
+    : index === 20
+      ? "See my result →"
+      : "Next question →"}
+</button>
           </div>
         )}
       </section>
